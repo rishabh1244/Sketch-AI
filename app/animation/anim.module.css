@@ -1,0 +1,4 @@
+:global(.App-bottom-bar) {
+  display: none !important;
+}
+

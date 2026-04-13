@@ -1,0 +1,11 @@
+.content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  height: 100vh;
+  width: 120vw;
+}
+.llm{
+    height:100%;
+    border-color: 2px solid white;
+}
+
