@@ -169,10 +169,8 @@ DIAGRAM QUALITY:
 - Label every component — no unlabeled elements
 
 ===========================
-CONCEPT TO DIAGRAM:
+CONCEPT TO DIAGRAM: ${USER_CONCEPT}
 =========================== 
-
-SImple Harmonic Moiton
 
 Generate a complete labeled Excalidraw scene with physically accurate animation for the above concept. Every moving part must have correct govern_x / govern_y physics. Every static part must have obj_type: "stationary". Return ONLY the JSON. Nothing else.
  

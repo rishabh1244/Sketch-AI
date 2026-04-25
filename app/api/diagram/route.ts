@@ -1,19 +1,28 @@
 import { NextResponse } from "next/server";
-import fs from "fs";
-import path from "path";
+import { createClient } from "@/app/auth/supabase/server";
+
 
 export async function GET() {
-    const filePath = path.join(process.cwd(), 'app', 'data', 'diagram.json');
-
-    if (!fs.existsSync(filePath)) {
-        return NextResponse.json(null, { status: 404 });
-    }
-
     try {
-        const raw = fs.readFileSync(filePath, 'utf-8');
-        return NextResponse.json(JSON.parse(raw));
-    } catch {
-        return NextResponse.json(null, { status: 500 });
+        const supabase = await createClient();
+        const { data: { user }, error: authError } = await supabase.auth.getUser();
+        if (authError || !user) {
+            return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+        }
+        const { data, error } = await supabase
+            .from("sketches")
+            .select("*")
+            .eq("user_id", user.id)
+            .maybeSingle();
+
+        if (error) throw error;
+
+        return NextResponse.json(data);
+
+    } catch (err) {
+        console.error(err);
+        return NextResponse.json({ error: "Something went wrong" }, { status: 500 });
     }
 }
+
 

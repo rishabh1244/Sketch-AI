@@ -2,7 +2,6 @@
 import { useState, useEffect, useRef } from "react";
 import "@excalidraw/excalidraw/index.css";
 import dynamic from "next/dynamic";
-import styles from "./drawing.module.css";
 
 const Excalidraw = dynamic(
     () => import("@excalidraw/excalidraw").then(mod => mod.Excalidraw),
@@ -26,7 +25,7 @@ export default function Drawing({url}: DrawingProps) {
                     .then(data => {
                         if (!data) return;
                         setDiagram(data);
-                        elementsRef.current = JSON.parse(JSON.stringify(data.elements));
+                        elementsRef.current = JSON.parse(JSON.stringify(data.data.elements));
                     });
             };
             load(); // initial load
@@ -43,7 +42,6 @@ export default function Drawing({url}: DrawingProps) {
         });
     }, [api, diagram]);
 
-    // Animation loop
     useEffect(() => {
         if (!api || !diagram) return;
 
@@ -52,11 +50,9 @@ export default function Drawing({url}: DrawingProps) {
                 elementsRef.current = elementsRef.current.map(el => {
                     if (el.obj_type !== "non_stationary") return el;
 
-                    // Build isolated state + constants scope for this element
                     const state = el.state;
                     const constants = el.constants;
 
-                    // Evaluate govern functions with their own scope
                     const evalFn = (fnStr: string, argName: string, argVal: number) => {
                         try {
                             const fn = new Function(

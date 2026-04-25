@@ -22,7 +22,7 @@ export default function Navbar() {
 
 
     const [editing, setEditing] = useState(false);
-    const [title, setTitle] = useState("Untitled Sketch");
+    const [title, setTitle] = useState("Untitled_Sketch");
     const [tempTitle, setTempTitle] = useState(title);
 
 

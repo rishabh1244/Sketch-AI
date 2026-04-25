@@ -30,7 +30,7 @@ export default function LLM() {
     try {
       await fetch("/api/llm", {
         method: "POST",
-        body: JSON.stringify({ USER_CONCEPT: prompt, LLM: llm }),
+        body: JSON.stringify({ SKETCH_NAME:"UNTITLED", USER_CONCEPT: prompt, LLM: llm }),
       });
       window.dispatchEvent(new Event("diagram-updated"));
       setPrompt("");
