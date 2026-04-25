@@ -93,7 +93,7 @@ export default function Drawing({url}: DrawingProps) {
                 }}
                 theme="dark"
                 excalidrawAPI={(api) => setApi(api)}
-                renderBottomRightUI={() => null}
+                renderTopRightUI={() => null}
                 UIOptions={{
                     canvasActions: {
                         export: false,
