@@ -4,7 +4,6 @@ import { gen_message } from "./message";
 import OpenAI from "openai";
 
 
-
 //slow and worse but ill leave it here .
 export async function POST(request: Request) {
     try {

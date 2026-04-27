@@ -28,7 +28,7 @@ export default function LLM() {
     if (!prompt.trim() || loading) return;
     setLoading(true);
     try {
-      await fetch("/api/llm", {
+      await fetch("/api/TEST_LLM", {
         method: "POST",
         body: JSON.stringify({ SKETCH_NAME:"UNTITLED", USER_CONCEPT: prompt, LLM: llm }),
       });

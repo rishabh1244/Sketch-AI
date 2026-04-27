@@ -1,0 +1,11 @@
+import { NextResponse } from "next/server";
+import { createClient } from "@/app/auth/supabase/server";
+
+import { gen_prompt } from "../llm/prompt";
+
+export async function POST(request: Request) {
+    try {
+        const { USER_CONCEPT, LLM, SKETCH_NAME } = await request.json();
+
+    } 
+}

@@ -1,3 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Space+Mono:wght@400;700&family=Rubik+Doodle+Shadow&display=swap');
+.logoSvgText {
+  font-family: 'Rubik Doodle Shadow', 'Caveat', cursive;
+  font-size: 25px;
+  font-weight: 700;
+}
+
+
 .dropdown {
   position: absolute;
   top: calc(100% + 10px);

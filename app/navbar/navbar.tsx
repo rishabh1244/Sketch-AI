@@ -5,6 +5,7 @@ import { useAuth } from "@/app/auth/context/AuthContext";
 import AuthModal from "../auth/auth";
 import Image from "next/image";
 import styles from "./navbar.module.css";
+import { useRouter } from "next/navigation";
 
 const savedArts = [
     {
@@ -19,7 +20,7 @@ export default function Navbar() {
     const [showAuth, setShowAuth] = useState(false);
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
-
+    const router = useRouter();
 
     const [editing, setEditing] = useState(false);
     const [title, setTitle] = useState("Untitled_Sketch");
@@ -40,8 +41,22 @@ export default function Navbar() {
     return (
         <>
             <nav className={styles.navbar}>
-                <div className={styles.left}>
-                    <h1 className={styles.logo}>ExcaLLM</h1>
+            <div
+
+            onClick={() => router.push("/")}
+            className={styles.left}>
+                    <text
+                        className={styles.logoSvgText}
+                        x="2" y="96"
+                        fill="none"
+                        stroke="white"
+                        strokeWidth="2"
+                    >
+                        Sketch.ai
+                    </text>
+
+
+
                 </div>
 
 
