@@ -319,7 +319,7 @@ export default function Landing() {
 
                 <div className={styles.badge}>
                     <span className={styles.badgeDot} />
-                    LLM × Physics Engine
+                LLM × Animation Engine
                 </div>
 
                 {/* SVG logo — hatch pattern + outline only, no inline font/style attrs */}
@@ -336,7 +336,7 @@ export default function Landing() {
                                 patternUnits="userSpaceOnUse"
                                 width="8"
                                 height="8"
-                            >
+                        >
                                 <line x1="0" y1="8" x2="8" y2="0" stroke="white" strokeWidth="1.8" />
                                 <line x1="-2" y1="2" x2="2" y2="-2" stroke="white" strokeWidth="1.8" />
                                 <line x1="6" y1="10" x2="10" y2="6" stroke="white" strokeWidth="1.8" />
