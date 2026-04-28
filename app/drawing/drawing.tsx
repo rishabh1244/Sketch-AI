@@ -9,31 +9,43 @@ const Excalidraw = dynamic(
 );
 
 interface DrawingProps {
-  url: string;
+    url?: string;       // optional — only needed when no data is passed
+    data?: any;         // pass a JSON object directly to skip fetching entirely
 }
 
-export default function Drawing({url}: DrawingProps) {
+export default function Drawing({ url, data: staticData }: DrawingProps) {
     const [api, setApi] = useState<any>(null);
     const [diagram, setDiagram] = useState<any>(null);
     const elementsRef = useRef<any[]>([]);
 
-    // Fetch diagram.json from API route
+    // ── data loading ──────────────────────────────────────────────
     useEffect(() => {
-            const load = () => {
-                fetch(url)
-                    .then(r => r.ok ? r.json() : null)
-                    .then(data => {
-                        if (!data) return;
-                        setDiagram(data);
-                        elementsRef.current = JSON.parse(JSON.stringify(data.data.elements));
-                    });
-            };
-            load(); // initial load
-            window.addEventListener("diagram-updated", load); // reload on new prompt
-            return () => window.removeEventListener("diagram-updated", load);
-            }, []);
+        // if a JSON object was passed directly, use it — no fetch needed
+        if (staticData) {
+            setDiagram(staticData);
+            elementsRef.current = JSON.parse(JSON.stringify(staticData.elements));
+            return;
+        }
 
-    // Initialize scene once api and diagram are both ready
+        // otherwise fall back to fetching from url as before
+        if (!url) return;
+
+        const load = () => {
+            fetch(url)
+                .then(r => r.ok ? r.json() : null)
+                .then(d => {
+                    if (!d) return;
+                    setDiagram(d);
+                    elementsRef.current = JSON.parse(JSON.stringify(d.data.elements));
+                });
+        };
+
+        load();
+        window.addEventListener("diagram-updated", load);
+        return () => window.removeEventListener("diagram-updated", load);
+    }, [staticData, url]);
+
+    // ── initialize scene ──────────────────────────────────────────
     useEffect(() => {
         if (!api || !diagram) return;
         import("@excalidraw/excalidraw").then(({ convertToExcalidrawElements }) => {
@@ -42,6 +54,7 @@ export default function Drawing({url}: DrawingProps) {
         });
     }, [api, diagram]);
 
+    // ── animation loop ────────────────────────────────────────────
     useEffect(() => {
         if (!api || !diagram) return;
 
@@ -69,7 +82,7 @@ export default function Drawing({url}: DrawingProps) {
                     const newX = el.govern_x ? evalFn(el.govern_x, "x", el.x) : el.x;
                     const newY = el.govern_y ? evalFn(el.govern_y, "y", el.y) : el.y;
 
-                    return { ...el, x: newX, y: newY, state }; // state is mutated in place
+                    return { ...el, x: newX, y: newY, state }; // state mutated in place
                 });
 
                 const elements = convertToExcalidrawElements(elementsRef.current);
@@ -88,7 +101,7 @@ export default function Drawing({url}: DrawingProps) {
                 initialData={{
                     appState: {
                         viewModeEnabled: true,
-                        zenModeEnabled: true
+                        zenModeEnabled: true,
                     }
                 }}
                 theme="dark"

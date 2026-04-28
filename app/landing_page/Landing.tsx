@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import styles from "./landing.module.css";
+import styles from "./styles/landing.module.css";
 import { useRouter } from "next/navigation";
-
+import Sample from "./Sample";
 const MATH_LABELS = [
     { text: "dx/dt = σ(y−x)", x: 0.07, y: 0.13, drift: 0.3 },
     { text: "∇²φ = ρ/ε₀", x: 0.80, y: 0.09, drift: 0.4 },
@@ -311,7 +311,7 @@ export default function Landing() {
         };
     }, []);
 
-    return (
+    return (<>
         <div className={styles.root}>
             <canvas ref={canvasRef} className={styles.bg} />
 
@@ -319,7 +319,7 @@ export default function Landing() {
 
                 <div className={styles.badge}>
                     <span className={styles.badgeDot} />
-                LLM × Animation Engine
+                    LLM × Animation Engine
                 </div>
 
                 {/* SVG logo — hatch pattern + outline only, no inline font/style attrs */}
@@ -336,7 +336,7 @@ export default function Landing() {
                                 patternUnits="userSpaceOnUse"
                                 width="8"
                                 height="8"
-                        >
+                            >
                                 <line x1="0" y1="8" x2="8" y2="0" stroke="white" strokeWidth="1.8" />
                                 <line x1="-2" y1="2" x2="2" y2="-2" stroke="white" strokeWidth="1.8" />
                                 <line x1="6" y1="10" x2="10" y2="6" stroke="white" strokeWidth="1.8" />
@@ -393,7 +393,12 @@ export default function Landing() {
                         onClick={() => router.push("/canvas")}
 
                         className={styles.btnPrimary}>Generate a diagram →</button>
-                    <button className={styles.btnGhost}>See examples</button>
+                    <button
+
+                        className={styles.btnGhost}
+                        onClick={() => document.getElementById("examples")?.scrollIntoView({ behavior: "smooth" })}
+
+                    >See examples</button>
                 </div>
 
                 <div className={styles.pills}>
@@ -401,8 +406,9 @@ export default function Landing() {
                         <span key={label} className={styles.pill}>{label}</span>
                     ))}
                 </div>
-
             </div>
         </div>
+        <Sample></Sample>
+        </>
     );
 }

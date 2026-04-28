@@ -1,0 +1,251 @@
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Space+Mono:wght@400;700&display=swap');
+
+/* ── section wrapper ───────────────────────────────────────────── */
+
+.section {
+  position: relative;
+  background: #0a0a0a;
+  padding: 6rem 2rem 8rem;
+  overflow: hidden;
+}
+
+/* subtle dot grid matching landing bg */
+.section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(255,255,255,0.06) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+}
+
+/* top separator — rough hand-drawn line feel */
+.section::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 8%;
+  right: 8%;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255,255,255,0.12) 20%,
+    rgba(255,255,255,0.22) 50%,
+    rgba(255,255,255,0.12) 80%,
+    transparent
+  );
+}
+
+/* ── header ────────────────────────────────────────────────────── */
+
+.header {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  margin-bottom: 3.5rem;
+}
+
+.headerTag {
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  color: rgba(255,255,255,0.25);
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 0.8rem;
+}
+
+.title {
+  font-family: 'Space Mono', monospace;
+
+  font-size: clamp(36px, 6vw, 64px);
+  font-weight: 700;
+  color: #fff;
+  transform: rotate(-0.5deg);
+  display: inline-block;
+  margin-bottom: 0.5rem;
+  text-decoration: underline wavy rgba(255,255,255,0.2);
+  text-underline-offset: 6px;
+}
+
+.desc {
+  font-family: 'Caveat', cursive;
+  font-size: 18px;
+  color: rgba(255,255,255,0.35);
+  transform: rotate(0.3deg);
+  display: inline-block;
+}
+
+/* ── grid ──────────────────────────────────────────────────────── */
+
+.grid {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* ── card ──────────────────────────────────────────────────────── */
+
+.card {
+  background: rgba(255,255,255,0.03);
+  border: 1.5px solid rgba(255,255,255,0.1);
+  border-radius: 4px;
+  overflow: hidden;
+  cursor: pointer;
+  position: relative;
+
+  /* slight random tilt handled by nth-child */
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+
+  /* staggered fade-in */
+  animation: cardIn 0.5s ease both;
+}
+
+.card:nth-child(odd)  { transform: rotate(-0.4deg); }
+.card:nth-child(even) { transform: rotate(0.4deg);  }
+
+.card:hover {
+  transform: rotate(0deg) translateY(-4px) !important;
+  border-color: rgba(255,255,255,0.32);
+  box-shadow: 4px 4px 0 rgba(255,255,255,0.08), 0 12px 40px rgba(0,0,0,0.5);
+}
+
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(18px) rotate(-0.4deg); }
+  to   { opacity: 1; }
+}
+
+/* ── gif area ──────────────────────────────────────────────────── */
+
+.gifWrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background: #111;
+}
+
+.gif {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(30%) brightness(0.75);
+  transition: filter 0.25s ease, transform 0.25s ease;
+}
+
+.card:hover .gif {
+  filter: grayscale(0%) brightness(0.9);
+  transform: scale(1.04);
+}
+
+/* dark gradient overlay */
+.gifOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(10,10,10,0.1) 0%,
+    rgba(10,10,10,0.55) 100%
+  );
+  pointer-events: none;
+}
+
+/* formula watermark bottom-left of gif */
+.formulaWatermark {
+  position: absolute;
+  bottom: 10px;
+  left: 12px;
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  color: rgba(255,255,255,0.3);
+  letter-spacing: 0.04em;
+  pointer-events: none;
+  transition: color 0.2s;
+}
+
+.card:hover .formulaWatermark {
+  color: rgba(255,255,255,0.65);
+}
+
+/* open-in-new-tab arrow button */
+.openBtn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 28px;
+  height: 28px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.18);
+  border-radius: 3px;
+  color: rgba(255,255,255,0.5);
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(-4px);
+  transition: opacity 0.18s, transform 0.18s, background 0.18s;
+  line-height: 1;
+}
+
+.card:hover .openBtn {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.openBtn:hover {
+  background: rgba(255,255,255,0.18);
+  color: #fff;
+}
+
+/* ── card body ─────────────────────────────────────────────────── */
+
+.body {
+  padding: 14px 16px 16px;
+}
+
+.tag {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.45);
+  padding: 2px 8px;
+  border-radius: 2px;
+  border: 1px solid rgba(255,255,255,0.1);
+  display: inline-block;
+  margin-bottom: 8px;
+}
+
+.cardTitle {
+  font-family: 'Caveat', cursive;
+  font-size: 22px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.9);
+  line-height: 1.2;
+  margin-bottom: 2px;
+}
+
+.cardSub {
+  font-family: 'Caveat', cursive;
+  font-size: 15px;
+  color: rgba(255,255,255,0.3);
+}
+
+/* ── bottom fade ───────────────────────────────────────────────── */
+
+.bottomFade {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 120px;
+  background: linear-gradient(to bottom, transparent, #0a0a0a);
+  pointer-events: none;
+}
