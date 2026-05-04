@@ -19,7 +19,7 @@ const EXAMPLES = [
         title: "Lorenz Attractor",
         subtitle: "Chaos & Butterfly Effect",
         tag: "math",
-        gif: "https://media.giphy.com/media/l0HlBO7eyXzSZkJri/giphy.gif",
+        gif: "https://github.com/rishabh1244/rishabh1244/blob/main/lorenz.svg",
         formula: "dx/dt = σ(y−x)",
     },
     {
@@ -43,7 +43,7 @@ const EXAMPLES = [
     {
         id: 5,
         title: "Spring-Mass System",
-        slug: "spring",
+        slug: "shm",
 
         subtitle: "Hooke's Law",
         tag: "physics",

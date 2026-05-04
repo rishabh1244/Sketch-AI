@@ -153,7 +153,7 @@ DIAGRAM QUALITY:
 - Label every component — no unlabeled elements
 
 ===========================
-CONCEPT TO DIAGRAM:  Pendulum Animation   
+CONCEPT TO DIAGRAM:  Simple Harmonic Motion , simplest well labeled diagram of a ball doing shm no spring  
 ===========================
 Generate a complete labeled Excalidraw scene with physically accurate animation for the above concept. Every moving part must have correct govern_x / govern_y physics. Every static part must have obj_type: "stationary". Return ONLY the JSON. Nothing else.
  

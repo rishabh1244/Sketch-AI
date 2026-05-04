@@ -25,7 +25,14 @@ const PILL_LABELS = [
 
 /* ── canvas helpers ─────────────────────────────────────────── */
 
-function roughLine(ctx, x1, y1, x2, y2, wobble = 1.2) {
+function roughLine(
+    ctx: CanvasRenderingContext2D,
+    x1: number,
+    y1: number,
+    x2: number,
+    y2: number,
+    wobble = 1.2,
+) {
     const dx = x2 - x1;
     const dy = y2 - y1;
     const steps = Math.max(2, Math.floor(Math.hypot(dx, dy) / 8));
@@ -40,7 +47,15 @@ function roughLine(ctx, x1, y1, x2, y2, wobble = 1.2) {
     }
 }
 
-function roughArc(ctx, cx, cy, r, startA, endA, wobble = 0.8) {
+function roughArc(
+    ctx: CanvasRenderingContext2D,
+    cx: number,
+    cy: number,
+    r: number,
+    startA: number,
+    endA: number,
+    wobble = 0.8,
+) {
     const steps = Math.max(8, Math.floor(r * 0.9));
     ctx.beginPath();
     for (let i = 0; i <= steps; i++) {
@@ -52,11 +67,11 @@ function roughArc(ctx, cx, cy, r, startA, endA, wobble = 0.8) {
     }
 }
 
-function hex2(val) {
+function hex2(val: number) {
     return Math.min(255, Math.max(0, Math.round(val))).toString(16).padStart(2, "0");
 }
 
-function precomputeLorenz(x0, y0, z0, n = 8000) {
+function precomputeLorenz(x0: number, y0: number, z0: number, n = 8000): number[][] {
     const s = 10, rr = 28, b = 8 / 3, dt = 0.005;
     let x = x0, y = y0, z = z0;
     const pts = [];
@@ -71,29 +86,33 @@ function precomputeLorenz(x0, y0, z0, n = 8000) {
 /* ── component ──────────────────────────────────────────────── */
 
 export default function Landing() {
-    const canvasRef = useRef(null);
+    const canvasRef = useRef<HTMLCanvasElement | null>(null);
     const router = useRouter();
 
     useEffect(() => {
         const canvas = canvasRef.current;
         if (!canvas) return;
-        const ctx = canvas.getContext("2d");
+        const maybeCtx = canvas.getContext("2d");
+        if (!maybeCtx) return;
+        const ctx: CanvasRenderingContext2D = maybeCtx;
 
-        let W, H, t = 0, frame = 0, lorenzHead = 0, animId;
+        let W: number, H: number, t = 0, frame = 0, lorenzHead = 0, animId: number;
 
         const lorenzPts1 = precomputeLorenz(0.1, 0, 0);
         const lorenzPts2 = precomputeLorenz(0.101, 0, 0);
         const TRAIL = 2200;
 
         function resize() {
-            W = canvas.width = window.innerWidth;
-            H = canvas.height = window.innerHeight;
+            const el = canvasRef.current;
+            if (!el) return;
+            W = el.width = window.innerWidth;
+            H = el.height = window.innerHeight;
         }
         resize();
         window.addEventListener("resize", resize);
 
         /* projection */
-        function lorenzXY(pt, cx, cy, scale) {
+        function lorenzXY(pt: number[], cx: number, cy: number, scale: number) {
             return [cx + pt[0] * scale, cy + pt[2] * scale - pt[1] * scale * 0.3];
         }
 
@@ -110,7 +129,13 @@ export default function Landing() {
                 }
         }
 
-        function drawLorenz(pts, cx, cy, scale, headOffset) {
+        function drawLorenz(
+            pts: number[][],
+            cx: number,
+            cy: number,
+            scale: number,
+            headOffset: number,
+        ) {
             const end = Math.min(lorenzHead + headOffset, pts.length - 1);
             const start = Math.max(0, end - TRAIL);
             if (end < 2) return;
@@ -134,7 +159,14 @@ export default function Landing() {
             }
         }
 
-        function drawAtom(cx, cy, r, speed, phase, nElectrons) {
+        function drawAtom(
+            cx: number,
+            cy: number,
+            r: number,
+            speed: number,
+            phase: number,
+            nElectrons: number,
+        ) {
             ctx.save();
             ctx.translate(cx, cy); ctx.scale(1, 0.35); ctx.translate(-cx, -cy);
             roughArc(ctx, cx, cy, r, 0, Math.PI * 2, 1.5);
@@ -170,7 +202,7 @@ export default function Landing() {
             }
         }
 
-        function drawPendulum(px, py, len, speed, phase) {
+        function drawPendulum(px: number, py: number, len: number, speed: number, phase: number) {
             const a = Math.sin(t * speed + phase) * 0.55;
             const bx = px + Math.sin(a) * len;
             const by = py + Math.cos(a) * len;
@@ -183,7 +215,7 @@ export default function Landing() {
             ctx.fillStyle = "rgba(255,255,255,0.5)"; ctx.fill();
         }
 
-        function drawSpring(ax, ay1, speed, phase) {
+        function drawSpring(ax: number, ay1: number, speed: number, phase: number) {
             const coils = 9, coilW = 10;
             const ay2 = ay1 + 120 + Math.sin(t * speed + phase) * 22;
             const segH = (ay2 - ay1) / (coils * 2);
@@ -209,7 +241,7 @@ export default function Landing() {
             }
         }
 
-        function drawWave(y, freq, amp, phaseOff, alpha) {
+        function drawWave(y: number, freq: number, amp: number, phaseOff: number, alpha: number) {
             ctx.beginPath();
             for (let x = 0; x <= W; x += 4) {
                 const wy = y + Math.sin(x * freq + t * 1.1 + phaseOff) * amp + (Math.random() - 0.5) * 0.5;
@@ -218,7 +250,7 @@ export default function Landing() {
             ctx.strokeStyle = `rgba(255,255,255,${alpha})`; ctx.lineWidth = 1.2; ctx.stroke();
         }
 
-        function drawFourier(cx, cy) {
+        function drawFourier(cx: number, cy: number) {
             const terms = 5, maxR = 30;
             let px = cx, py = cy;
             for (let k = 1; k <= terms; k++) {
