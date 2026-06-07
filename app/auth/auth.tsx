@@ -2,7 +2,6 @@
 
 import { useEffect, useRef } from "react";
 import { createClient } from "@/app/auth/supabase/client";
-import styles from "./auth.module.css";
 
 type AuthModalProps = {
   isOpen: boolean;
@@ -45,31 +44,31 @@ export default function AuthModal({ isOpen, onClose }: AuthModalProps) {
   if (!isOpen) return null;
 
   return (
-    <div className={styles.overlay}>
-      <div className={styles.modal} ref={modalRef}>
-        <button className={styles.closeBtn} onClick={onClose} aria-label="Close">
+    <div className="fixed inset-0 bg-black/60 backdrop-blur-[4px] flex items-center justify-center z-[1000] animate-fade-in">
+      <div className="bg-[#0f0f0f] border border-[#2a2a2a] rounded-[16px] p-8 w-full max-w-[400px] relative animate-slide-up" ref={modalRef}>
+        <button className="absolute top-4 right-4 bg-none border-none text-[#666] text-base cursor-pointer py-1 px-2 rounded-md transition-[background,color] duration-150 hover:bg-[#1e1e1e] hover:text-white" onClick={onClose} aria-label="Close">
           ✕
         </button>
 
-        <div className={styles.header}>
-          <div className={styles.logo}>✦</div>
-          <h2 className={styles.title}>Welcome to Sketch AI</h2>
-          <p className={styles.subtitle}>
+        <div className="text-center mb-6">
+          <div className="text-[2rem] mb-3">✦</div>
+          <h2 className="text-[1.4rem] font-semibold text-[#f0f0f0] m-0 mb-1.5">Welcome to Sketch AI</h2>
+          <p className="text-[0.875rem] text-[#888] m-0">
             Sign in to save your diagrams and access all features
           </p>
         </div>
 
-        <div className={styles.divider} />
+        <div className="h-[1px] bg-[#2a2a2a] my-6" />
 
-        <button className={styles.googleBtn} onClick={handleGoogleSignIn}>
+        <button className="flex items-center justify-center gap-3 w-full py-3 px-4 bg-white text-[#1a1a1a] border-none rounded-[10px] text-[0.95rem] font-medium cursor-pointer transition-[opacity,transform] duration-150 hover:opacity-[0.92] hover:-translate-y-px active:translate-y-0" onClick={handleGoogleSignIn}>
           <GoogleIcon />
           Continue with Google
         </button>
 
-        <p className={styles.terms}>
+        <p className="text-[0.75rem] text-[#555] text-center mt-5">
           By continuing, you agree to our{" "}
-          <a href="#">Terms of Service</a> and{" "}
-          <a href="#">Privacy Policy</a>
+          <a className="text-[#888] underline cursor-pointer" href="#">Terms of Service</a> and{" "}
+          <a className="text-[#888] underline cursor-pointer" href="#">Privacy Policy</a>
         </p>
       </div>
     </div>

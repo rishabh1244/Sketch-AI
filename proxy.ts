@@ -33,13 +33,24 @@ export async function proxy(request: NextRequest) {
   );
 
   // Refresh expired sessions on navigation/API calls.
-  await supabase.auth.getUser();
+  const { data: { user } } = await supabase.auth.getUser();
+
+  const url = request.nextUrl.clone();
+
+  // Removed automatic redirect to dashboard when visiting home
+  // so logged-in users can still view the landing page.
+
+  // Protect dashboard routes
+  if (url.pathname.startsWith('/dashboard') && !user) {
+    url.pathname = '/';
+    return NextResponse.redirect(url);
+  }
 
   return supabaseResponse;
 }
 
 export const config = {
   matcher: [
-    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
+    "/((?!_next/static|_next/image|favicon.ico|api|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
   ],
 };

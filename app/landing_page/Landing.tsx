@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import styles from "./styles/landing.module.css";
 import { useRouter } from "next/navigation";
 import Sample from "./Sample";
 const MATH_LABELS = [
@@ -96,7 +95,8 @@ export default function Landing() {
         if (!maybeCtx) return;
         const ctx: CanvasRenderingContext2D = maybeCtx;
 
-        let W: number, H: number, t = 0, frame = 0, lorenzHead = 0, animId: number;
+        let W: number, H: number, t = 0, frame = 0, animId: number;
+        const lorenzHead = 0;
 
         const lorenzPts1 = precomputeLorenz(0.1, 0, 0);
         const lorenzPts2 = precomputeLorenz(0.101, 0, 0);
@@ -307,25 +307,6 @@ export default function Landing() {
             drawGrid();
             drawVectorField();
             drawMathLabels();
-            /*
-              if (frame % 2 === 0 && lorenzHead < lorenzPts1.length - 1) lorenzHead += 3;
-              drawLorenz(lorenzPts1, W * 0.28, H * 0.5, 5.5,   0);
-              drawLorenz(lorenzPts2, W * 0.28, H * 0.5, 5.5, 400);
-        
-              drawAtom(W - 110, 120,      55, 0.9, 0,   2);
-              drawAtom(W - 110, 120,      32, 1.4, 1.5, 1);
-              drawAtom(100,     H - 130,  50, 0.7, 0.8, 2);
-              drawAtom(100,     H - 130,  28, 1.2, 2.2, 1);
-        
-              drawPendulum(W - 80,  50, 85, 1.1, 0);
-              drawPendulum(W - 44,  50, 65, 0.9, 1.2);
-              drawPendulum(W - 116, 50, 55, 1.3, 2.1);
-        
-              drawSpring(50,     H * 0.20, 1.5, 0);
-              drawSpring(W - 50, H * 0.28, 1.1, 1.0);
-              drawFourier(W * 0.88, H * 0.28);
-              drawFourier(W * 0.12, H * 0.32);
-        */
 
             drawWave(H * 0.74, 0.011, 20, 0, 0.30);
             drawWave(H * 0.79, 0.008, 14, 1.2, 0.22);
@@ -344,20 +325,20 @@ export default function Landing() {
     }, []);
 
     return (<>
-        <div className={styles.root}>
-            <canvas ref={canvasRef} className={styles.bg} />
+        <div className="bg-[#0a0a0a] min-h-screen overflow-hidden font-caveat text-white box-border">
+            <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />
 
-            <div className={styles.hero}>
+            <div className="relative z-10 min-h-screen flex flex-col items-center justify-center p-8 text-center">
 
-                <div className={styles.badge}>
-                    <span className={styles.badgeDot} />
+                <div className="inline-flex items-center gap-[7px] border-[1.5px] border-[rgba(255,255,255,0.25)] rounded-[4px] py-[5px] px-4 mb-8 font-space-mono text-[11px] tracking-[0.1em] text-[rgba(255,255,255,0.45)] uppercase -rotate-[0.4deg]">
+                    <span className="inline-block w-6 h-6 rounded-full bg-white opacity-70 animate-blink" style={{ width: "6px", height: "6px" }} />
                     LLM × Animation Engine
                 </div>
 
                 {/* SVG logo — hatch pattern + outline only, no inline font/style attrs */}
-                <div className={styles.logoWrap}>
+                <div className="mb-[1.6rem]">
                     <svg
-                        className={styles.logoSvg}
+                        className="block w-[clamp(260px,52vw,620px)] ml-[7vh] h-auto overflow-visible -rotate-[0.8deg] drop-shadow-[0_0_18px_rgba(255,255,255,0.07)]"
                         viewBox="0 0 640 110"
                         xmlns="http://www.w3.org/2000/svg"
                         aria-label="Sketch.ai"
@@ -375,8 +356,7 @@ export default function Landing() {
                             </pattern>
 
                             <clipPath id="sketchClip">
-                                {/* font-family resolved from .logoSvgText CSS class */}
-                                <text className={styles.logoSvgText} x="2" y="96">Sketch</text>
+                                <text className="font-logo text-[108px] font-bold" x="2" y="96">Sketch</text>
                             </clipPath>
                         </defs>
 
@@ -389,7 +369,7 @@ export default function Landing() {
 
                         {/* stroke outline for crispness */}
                         <text
-                            className={styles.logoSvgText}
+                            className="font-logo text-[108px] font-bold"
                             x="2" y="96"
                             fill="none"
                             stroke="white"
@@ -411,36 +391,33 @@ export default function Landing() {
                     </svg>
                 </div>
 
-                <p className={styles.tagline}>
-                    Turn any concept into a <strong>living diagram</strong>.<br />
+                <p className="font-caveat text-[clamp(18px,2.8vw,30px)] font-normal text-[rgba(255,255,255,0.4)] max-w-[480px] leading-[1.5] mb-2 rotate-[0.3deg]">
+                    Turn any concept into a <strong className="font-bold text-[rgba(255,255,255,0.85)] underline decoration-wavy underline-offset-4">living diagram</strong>.<br />
                     Physics. Math . Movement.
                 </p>
 
-                <p className={styles.sub}>excalidraw · animations · motion</p>
+                <p className="font-space-mono text-xs tracking-[0.06em] text-[rgba(255,255,255,0.22)] mb-11">excalidraw · animations · motion</p>
 
-                <div className={styles.ctaRow}>
+                <div className="flex gap-3.5 items-center flex-wrap justify-center -rotate-[0.2deg]">
 
 
                     <button
                         onClick={() => router.push("/canvas")}
-
-                        className={styles.btnPrimary}>Generate a diagram →</button>
+                        className="font-caveat text-[18px] font-bold bg-white text-[#0a0a0a] border-2 border-white rounded-[3px] py-2.5 px-[26px] cursor-pointer shadow-[3px_3px_0_rgba(255,255,255,0.35)] -rotate-[0.5deg] transition-[background,color,box-shadow] duration-150 hover:bg-[#0a0a0a] hover:text-white hover:shadow-[4px_4px_0_rgba(255,255,255,0.2)]">Generate a diagram →</button>
                     <button
-
-                        className={styles.btnGhost}
+                        className="font-caveat text-[18px] font-normal bg-transparent text-[rgba(255,255,255,0.45)] border-[1.5px] border-[rgba(255,255,255,0.25)] rounded-[3px] py-2.5 px-[22px] cursor-pointer shadow-[2px_2px_0_rgba(255,255,255,0.08)] rotate-[0.4deg] transition-[color,border-color] duration-150 hover:text-[rgba(255,255,255,0.85)] hover:border-[rgba(255,255,255,0.55)]"
                         onClick={() => document.getElementById("examples")?.scrollIntoView({ behavior: "smooth" })}
-
                     >See examples</button>
                 </div>
 
-                <div className={styles.pills}>
+                <div className="absolute bottom-8 left-0 right-0 flex gap-2 flex-wrap justify-center px-8">
                     {PILL_LABELS.map((label) => (
-                        <span key={label} className={styles.pill}>{label}</span>
+                        <span key={label} className="font-caveat text-sm text-[rgba(255,255,255,0.28)] border border-[rgba(255,255,255,0.14)] rounded-[3px] py-[3px] px-3 tracking-[0.02em]">{label}</span>
                     ))}
                 </div>
             </div>
         </div>
         <Sample></Sample>
-        </>
+    </>
     );
 }

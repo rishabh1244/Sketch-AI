@@ -4,8 +4,8 @@ import { useState, useRef, useEffect } from "react";
 import { useAuth } from "@/app/auth/context/AuthContext";
 import AuthModal from "../auth/auth";
 import Image from "next/image";
-import styles from "./navbar.module.css";
 import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
 
 const savedArts = [
     {
@@ -25,7 +25,11 @@ export default function Navbar() {
     const [editing, setEditing] = useState(false);
     const [title, setTitle] = useState("Untitled_Sketch");
     const [tempTitle, setTempTitle] = useState(title);
+    const [mounted, setMounted] = useState(false);
 
+    useEffect(() => {
+        setMounted(true);
+    }, []);
 
     // Close dropdown on outside click
     useEffect(() => {
@@ -40,36 +44,35 @@ export default function Navbar() {
 
     return (
         <>
-            <nav className={styles.navbar}>
-            <div
-
-            onClick={() => router.push("/")}
-            className={styles.left}>
-                    <text
-                        className={styles.logoSvgText}
-                        x="2" y="96"
-                        fill="none"
-                        stroke="white"
-                        strokeWidth="2"
-                    >
+            <nav className="flex justify-between items-center py-[7px] px-10 bg-[#0b0c0f] text-[#e5e7eb] border-b border-[rgba(255,255,255,0.08)] sticky top-0 z-50">
+                <div
+                    onClick={() => router.push("/")}
+                    className="flex items-center gap-2.5 cursor-pointer">
+                    <span className="font-logo text-[25px] font-bold text-white">
                         Sketch.ai
-                    </text>
-
-
-
+                    </span>
                 </div>
 
-
-
-                <div className={styles.right}>
-                    {loading ? null : user ? (
+                <div className="flex items-center gap-3">
+                    {!mounted || loading ? (
+                        <button
+                            className="py-1.5 px-[18px] rounded-[10px] bg-transparent border border-[rgba(255,255,255,0.15)] text-[#e5e7eb] text-sm font-medium cursor-pointer hover:border-[rgba(255,255,255,0.4)] hover:bg-[rgba(255,255,255,0.04)] active:bg-[rgba(255,255,255,0.08)]"
+                            onClick={() => setShowAuth(true)}
+                        >
+                            Get Started
+                        </button>
+                    ) : user ? (
                         <>
-
-
-                            <div className={styles.titleWrapper}>
+                            <Button
+                                onClick={() => router.push("/dashboard")}
+                                className="text-white rounded-[10px] cursor-pointer mr-2 h-8 px-4 hover:bg-white hover:text-black transition-colors"
+                            >
+                                Dashboard
+                            </Button>
+                            {/* <div className="flex items-center gap-1.5">
                                 {editing ? (
                                     <input
-                                        className={styles.titleInput}
+                                        className="bg-transparent border border-[#2a2a2a] rounded-md py-1 px-2 text-white text-sm outline-none focus:border-[#555]"
                                         value={tempTitle}
                                         onChange={(e) => setTempTitle(e.target.value)}
                                         onBlur={() => {
@@ -86,15 +89,14 @@ export default function Navbar() {
                                     />
                                 ) : (
                                     <>
-                                        <span className={styles.title}>{title}</span>
+                                        <span className="text-sm text-[#ddd] font-medium mr-20">{title}</span>
                                         <button
-                                            className={styles.editBtn}
+                                            className="bg-transparent border-none cursor-pointer text-[13px] opacity-60 transition-all duration-200 ease-in-out hover:opacity-100 hover:scale-110"
                                             onClick={() => {
                                                 setTempTitle(title);
                                                 setEditing(true);
                                             }}
                                         >
-
                                             <svg
                                                 xmlns="http://www.w3.org/2000/svg"
                                                 width="16"
@@ -112,13 +114,11 @@ export default function Navbar() {
                                         </button>
                                     </>
                                 )}
-                            </div>
+                            </div> */}
 
-
-
-                            <div className={styles.avatarWrapper} ref={dropdownRef}>
+                            <div className="relative" ref={dropdownRef}>
                                 <button
-                                    className={styles.avatarBtn}
+                                    className="bg-none border-none cursor-pointer p-0 rounded-full flex items-center justify-center hover:opacity-85"
                                     onClick={() => setDropdownOpen((prev) => !prev)}
                                 >
                                     {user.user_metadata?.avatar_url ? (
@@ -127,46 +127,46 @@ export default function Navbar() {
                                             alt="avatar"
                                             width={32}
                                             height={32}
-                                            className={styles.avatar}
+                                            className="rounded-full object-cover block"
                                         />
                                     ) : (
-                                        <div className={styles.avatarFallback}>
+                                        <div className="w-8 h-8 rounded-full bg-[#2a2a2a] text-[#ccc] text-[0.85rem] font-medium flex items-center justify-center">
                                             {(user.user_metadata?.full_name ?? user.email ?? "U")[0].toUpperCase()}
                                         </div>
                                     )}
                                 </button>
 
                                 {dropdownOpen && (
-                                    <div className={styles.dropdown}>
-                                        <div className={styles.dropdownUser}>
-                                            <span className={styles.dropdownName}>
+                                    <div className="absolute top-[calc(100%+10px)] right-0 bg-[#0d0d0d] border border-[#1f1f1f] rounded-xl min-w-[200px] p-[0.4rem] z-[200] shadow-[0_10px_30px_rgba(0,0,0,0.6)]">
+                                        <div className="flex flex-col gap-0.5 pt-2 px-[0.65rem] pb-[0.6rem]">
+                                            <span className="text-[0.875rem] font-medium text-[#e0e0e0]">
                                                 {user.user_metadata?.full_name ?? "User"}
                                             </span>
                                         </div>
 
-                                        <div className={styles.dropdownDivider} />
+                                        <div className="h-[1px] bg-[#1f1f1f] my-[0.3rem]" />
 
-                                        <div className={styles.sectionTitle}>Saves</div>
+                                        <div className="text-[0.7rem] text-[#666] py-[0.4rem] px-[0.7rem] uppercase tracking-[0.08em]">Saves</div>
 
-                                        <div className={styles.savesList}>
+                                        <div className="max-h-[160px] overflow-y-auto flex flex-col gap-1.5 p-[0.3rem]">
                                             {savedArts?.length ? (
                                                 savedArts.map((art) => (
-                                                    <div key={art.id} className={styles.saveItem}>
-                                                        <img src={art.thumbnail} className={styles.saveThumb} />
-                                                        <div className={styles.saveMeta}>
-                                                            <span className={styles.saveTitle}>{art.title}</span>
+                                                    <div key={art.id} className="flex gap-2.5 items-center p-1.5 rounded-[10px] cursor-pointer transition-all duration-200 ease-in-out hover:bg-[rgba(255,255,255,0.05)]">
+                                                        <img src={art.thumbnail} className="w-[42px] h-[42px] rounded-lg object-cover" />
+                                                        <div className="flex flex-col">
+                                                            <span className="text-[0.8rem] text-[#ddd]">{art.title}</span>
                                                         </div>
                                                     </div>
                                                 ))
                                             ) : (
-                                                <span className={styles.empty}>No saved items</span>
+                                                <span className="text-[0.75rem] text-[#555] p-2">No saved items</span>
                                             )}
                                         </div>
 
-                                        <div className={styles.dropdownDivider} />
+                                        <div className="h-[1px] bg-[#1f1f1f] my-[0.3rem]" />
 
                                         <button
-                                            className={styles.dropdownItemDanger}
+                                            className="flex items-center gap-2 w-full p-2 border-none bg-none text-[#ff6b6b] text-[0.85rem] rounded-lg cursor-pointer hover:bg-[rgba(255,0,0,0.1)]"
                                             onClick={() => {
                                                 signOut();
                                                 setDropdownOpen(false);
@@ -181,7 +181,7 @@ export default function Navbar() {
                         </>
                     ) : (
                         <button
-                            className={`${styles.btnOutline} ${styles.btn}`}
+                            className="py-1.5 px-[18px] rounded-[10px] bg-transparent border border-[rgba(255,255,255,0.15)] text-[#e5e7eb] text-sm font-medium cursor-pointer hover:border-[rgba(255,255,255,0.4)] hover:bg-[rgba(255,255,255,0.04)] active:bg-[rgba(255,255,255,0.08)]"
                             onClick={() => setShowAuth(true)}
                         >
                             Get Started

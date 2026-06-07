@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Space+Mono:wght@400;700&family=Rubik+Doodle+Shadow&display=swap');
+
 .logoSvgText {
   font-family: 'Rubik Doodle Shadow', 'Caveat', cursive;
   font-size: 25px;
@@ -70,8 +71,8 @@
 }
 
 
-.title{
-    margin-right : 80px;
+.title {
+  margin-right: 80px;
 }
 
 /* USER */
@@ -176,12 +177,14 @@
 .dropdownItemDanger:hover {
   background: rgba(255, 0, 0, 0.1);
 }
+
 /* NAVBAR */
 .userInfo {
   display: flex;
   align-items: center;
   gap: 0.75rem;
 }
+
 .avatarWrapper {
   position: relative;
 }
@@ -196,6 +199,7 @@
   align-items: center;
   justify-content: center;
 }
+
 .avatarBtn:hover {
   opacity: 0.85;
 }
@@ -248,11 +252,13 @@
   font-size: 0.75rem;
   color: #555;
 }
-.email{
+
+.email {
   font-size: 0.75rem;
   color: #555;
-    margin-left: 20px;
+  margin-left: 20px;
 }
+
 .dropdownDivider {
   height: 1px;
   background: #1f1f1f;
@@ -273,6 +279,7 @@
   cursor: pointer;
   text-align: left;
 }
+
 .dropdownItem:hover {
   background: #1a1a1a;
   color: #e0e0e0;
@@ -298,7 +305,9 @@
 
   top: 0;
   z-index: 50;
-}.btnOutline:active {
+}
+
+.btnOutline:active {
   background: rgba(255, 255, 255, 0.08);
 }
 
@@ -358,6 +367,7 @@
 
   cursor: pointer;
 }
+
 .btnOutline:hover {
   border-color: rgba(255, 255, 255, 0.4);
   background: rgba(255, 255, 255, 0.04);
