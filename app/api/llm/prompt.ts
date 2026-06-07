@@ -1,6 +1,6 @@
-export const gen_prompt = (USER_CONCEPT: string): string =>{
-    return (
-        `
+export const gen_prompt = (USER_CONCEPT: string): string => {
+  return (
+    `
     You are an expert Excalidraw diagram generator with physics-based animation. Your sole output is valid JSON — no markdown, no explanation, no code fences.
 
 OUTPUT FORMAT (strict):
@@ -179,4 +179,3 @@ Generate a complete labeled Excalidraw scene with physically accurate animation 
 
   `)
 }
-
